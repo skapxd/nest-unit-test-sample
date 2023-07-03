@@ -26,11 +26,17 @@
     "@nestjs/mongoose": "^10.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^7.0.12",
+    "@nestjs/typeorm": "^10.0.0",
+    "better-sqlite3": "^8.4.0",
     "dotenv": "^16.3.1",
     "mongodb-memory-server": "^8.13.0",
     "mongoose": "^7.3.1",
+    "mysql2": "^3.4.3",
+    "pg-mem": "^2.6.13",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.17",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
