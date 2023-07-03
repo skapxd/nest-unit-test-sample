@@ -2,13 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { TypeormEntity2 } from './entities/typeorm.entity';
+import { TypeormEntity } from './entities/typeorm.entity';
 import { TypeormController } from './typeorm.controller';
 import { TypeormService } from './typeorm.service';
 
 describe('TypeormController', () => {
   let controller: TypeormController;
-  let repository: Repository<TypeormEntity2>;
+  let repository: Repository<TypeormEntity>;
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -18,16 +18,16 @@ describe('TypeormController', () => {
           type: 'better-sqlite3',
           synchronize: true,
           dropSchema: true,
-          entities: [TypeormEntity2],
+          entities: [TypeormEntity],
         }),
-        TypeOrmModule.forFeature([TypeormEntity2]),
+        TypeOrmModule.forFeature([TypeormEntity]),
       ],
       controllers: [TypeormController],
       providers: [TypeormService],
     }).compile();
 
     controller = app.get<TypeormController>(TypeormController);
-    repository = app.get(getRepositoryToken(TypeormEntity2));
+    repository = app.get(getRepositoryToken(TypeormEntity));
   });
 
   afterEach(async () => {
