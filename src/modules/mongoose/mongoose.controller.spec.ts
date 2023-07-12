@@ -1,14 +1,18 @@
+import { INestApplication } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Connection, Model } from 'mongoose';
+import * as request from 'supertest';
+
+import { mainConfig } from '#/src/utils/mainConfig';
 
 import { MongooseController } from './mongoose.controller';
 import { MongooseService } from './mongoose.service';
 import { MongooseCollection, MongooseSchema } from './schema/mongoose.entity';
 
 describe('MongooseController', () => {
-  let controller: MongooseController;
+  let app: INestApplication;
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let model: Model<MongooseCollection>;
@@ -30,7 +34,11 @@ describe('MongooseController', () => {
       providers: [MongooseService],
     }).compile();
 
-    controller = module.get<MongooseController>(MongooseController);
+    app = module.createNestApplication();
+
+    mainConfig(app);
+
+    await app.init();
   });
 
   afterAll(async () => {
@@ -48,14 +56,29 @@ describe('MongooseController', () => {
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(app).toBeDefined();
     expect(model).toBeDefined();
   });
 
-  it('should create one document', async () => {
-    await controller.create({ label: 'label', value: 'value' });
-    const documents = await model.find();
+  it('should return status 412, body is not valid dto', async () => {
+    const resp = await request(app.getHttpServer())
+      .post('/mongoose')
+      .send({ title: 'Title' })
+      .set('Accept', 'application/json');
 
-    expect(documents.length).toBe(1);
+    expect(resp.status).toBe(412);
+  });
+
+  it('should return status 201, body is valid dto', async () => {
+    const resp = await request(app.getHttpServer())
+      .post('/mongoose')
+      .send({ label: 'Label', value: 'Value' })
+      .set('Accept', 'application/json');
+
+    expect(resp.status).toBe(201);
+
+    const allRows = await model.find();
+
+    expect(allRows.length).toBe(1);
   });
 });

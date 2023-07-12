@@ -1,4 +1,9 @@
+import { IsString } from '@nestjs/class-validator';
+
 export class CreateMongooseDto {
-  label: string;
-  value: string;
+  @IsString()
+  readonly label: any;
+
+  @IsString()
+  readonly value: any;
 }

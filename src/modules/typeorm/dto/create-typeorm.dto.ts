@@ -1,4 +1,9 @@
+import { IsString } from '@nestjs/class-validator';
+
 export class CreateTypeormDto {
-  label: string;
-  value: string;
+  @IsString()
+  label: any;
+
+  @IsString()
+  value: any;
 }

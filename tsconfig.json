@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "paths": {
+      "#/*": ["*"]
+    },
+    "resolveJsonModule": true,
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
